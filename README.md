@@ -1,4 +1,4 @@
-# StorygAN CLEVR Dataset Generation
+# StoryGAN CLEVR Dataset Generation
 
 This is the code for StoryGAN adapted from [CLEVR dataset](http://cs.stanford.edu/people/jcjohns/clevr/).
 
