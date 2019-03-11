@@ -43,4 +43,4 @@ cd descripton_generation
 python vec_questions.py
 ```
 
-The file `inc_output/CLEVR_single_obj_dict_rgb.npy` will then contain questions for the generated images.
+The file `inc_output/CLEVR_single_obj_dict_rgb.npy` will then contain feature vectors for generated images.
