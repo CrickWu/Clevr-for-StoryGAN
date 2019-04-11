@@ -58,26 +58,24 @@ if __name__ == '__main__':
         ground_truth = json.load(open(filename))
         # program for generating 18*4 + 3features
 
-        # # Recursively generate vector representations for "objects"
-        # img_feature = np.zeros(18 * 4 + 3)
-        # img_feature[-3:] = ground_truth['directions']['right']
-        # for idx in range(0, 4):
-        #     img_filename = change_name(filename, idx)
-        #     img_feature[idx*18:(idx+1)*18] = basic_feature(ground_truth, idx)
-        #     # add in camera direction
-        #     final_dict[img_filename] = img_feature.copy()
-
-        # program for generating 18 + 3features
+        # Recursively generate vector representations for "objects"
+        img_feature = np.zeros(18 * 4 + 3)
+        img_feature[-3:] = ground_truth['directions']['right']
         for idx in range(0, 4):
-        # for idx in range(0, 1):
-            img_feature = np.zeros(13 + 3)
-            img_feature[-3:] = ground_truth['directions']['right']
             img_filename = change_name(filename, idx)
-            img_feature[:13] = basic_feature(ground_truth, idx)
+            img_feature[idx*18:(idx+1)*18] = basic_feature(ground_truth, idx)
             # add in camera direction
-            final_dict[img_filename] = img_feature
-            # print(np.where(img_feature[3:10]))
-            # print(filename, img_feature[3:6])
+            final_dict[img_filename] = img_feature.copy()
+
+        # # program for generating 18 + 3features
+        # for idx in range(0, 4):
+        # # for idx in range(0, 1):
+        #     img_feature = np.zeros(13 + 3)
+        #     img_feature[-3:] = ground_truth['directions']['right']
+        #     img_filename = change_name(filename, idx)
+        #     img_feature[:13] = basic_feature(ground_truth, idx)
+        #     # add in camera direction
+        #     final_dict[img_filename] = img_feature
 
     # np.save('../inc_output/CLEVR_dict.npy', final_dict)
     # np.save('../inc_output/CLEVR_single_obj_dict.npy', final_dict)
