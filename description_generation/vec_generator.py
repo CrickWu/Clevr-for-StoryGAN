@@ -19,7 +19,7 @@ color_mapping = {"gray": [87, 87, 87],
 
 # normalizing to (0, 1)
 for key in color_mapping:
-    color_mapping[key] = [float(item) / 255. for item in color_mapping[key]]
+    color_mapping[key] = np.asarray([float(item) / 255. for item in color_mapping[key]])
 
 discrete_mapping = {
   "shape": [ "cube", "sphere", "cylinder"],
@@ -34,14 +34,17 @@ def basic_feature(ground_truth, idx):
     basic_dict = ground_truth['objects'][idx]
     feature_list = []
     for key in discrete_keys:
-        if key != 'color':
-            key_feature = np.zeros(len(discrete_mapping[key]))
-            # print(discrete_mapping[key])
-            # print(basic_dict[key])
-            found_idx = discrete_mapping[key].index(basic_dict[key])
-            key_feature[found_idx] = 1.0
-        else:
-            key_feature = color_mapping[basic_dict[key]].copy()
+        # alternative RGB encoding with 13 dimension, in the experiments, we encode colors as 1-hot vectors
+        # if key != 'color':
+            # key_feature = np.zeros(len(discrete_mapping[key]))
+            # found_idx = discrete_mapping[key].index(basic_dict[key])
+            # key_feature[found_idx] = 1.0
+        # else:
+            # key_feature = color_mapping[basic_dict[key]].copy()
+        # 1-hot vector encoding
+        key_feature = np.zeros(len(discrete_mapping[key]))
+        found_idx = discrete_mapping[key].index(basic_dict[key])
+        key_feature[found_idx] = 1.0
         feature_list.extend(key_feature)
     feature_list.extend(basic_dict['3d_coords'])
     return feature_list
@@ -53,7 +56,6 @@ def change_name(json_name, idx):
 if __name__ == '__main__':
 
     final_dict = {}
-    # filename = '../inc_output/scenes/CLEVR_new_000000.json'
     for filename in sorted(glob.glob('../inc_output/scenes/CLEVR_new_*.json')):
         ground_truth = json.load(open(filename))
         # program for generating 18*4 + 3features
@@ -77,6 +79,5 @@ if __name__ == '__main__':
         #     # add in camera direction
         #     final_dict[img_filename] = img_feature
 
-    # np.save('../inc_output/CLEVR_dict.npy', final_dict)
-    # np.save('../inc_output/CLEVR_single_obj_dict.npy', final_dict)
-    np.save('../inc_output/CLEVR_single_obj_dict_rgb.npy', final_dict)
+    np.save('../inc_output/CLEVR_dict.npy', final_dict)
+    # np.save('../inc_output/CLEVR_single_obj_dict_rgb.npy', final_dict)
